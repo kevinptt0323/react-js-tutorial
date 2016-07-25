@@ -1,6 +1,14 @@
 function* index(next) {
   const postCol = this.getCollection('posts');
-  let posts = yield postCol.find({ });
+  let posts = {};
+  if (this.username) {
+    const userCol = this.getCollection('users')
+    const { username } = this;
+    let user = (yield userCol.findOne({ username })) || {};
+    posts = yield postCol.find({ uid: user._id });
+  } else {
+    posts = yield postCol.find({ });
+  }
   this.body = posts;
   yield next;
 }
@@ -16,7 +24,7 @@ function* create(next) {
     const pid = (yield counterCol.findOne({ key: 'posts' })).value + 1;
     let post_data = {
       pid, 
-      user: user._id,
+      uid: user._id,
       content: form.content,
       created_at: new Date()
     };

@@ -1,28 +1,40 @@
-const router = require('koa-router')({ prefix: '/api' });
-const { userCtrl, authCtrl, postCtrl } = require('./Controllers');
+const koaRouter = require('koa-router');
+const { userCtrl, authCtrl, postCtrl, friendCtrl } = require('./Controllers');
+const router = koaRouter({ prefix: '/api' });
+const usersRouter = koaRouter();
+const postsRouter = koaRouter();
+const friendsRouter = koaRouter();
 
-router
+friendsRouter
+  .get('/', friendCtrl.index)
+  .post('/', friendCtrl.create)
+;
 
+usersRouter
   .param('username', function* (username, next) {
     this.username = username;
     yield next;
   })
-  .get('/users/', userCtrl.index)
-  .post('/users/', userCtrl.create)
-  .get('/users/:username', userCtrl.show)
-  .delete('/users/:username', userCtrl.destroy)
+  .get('/', userCtrl.index)
+  .post('/', userCtrl.create)
+  .get('/:username', userCtrl.show)
+  .delete('/:username', userCtrl.destroy)
+  .get('/:username/posts/', postCtrl.index)
+  .use('/:username/friends', friendsRouter.routes())
+;
 
-  //.post('/login', authCtrl.login)
-
+postsRouter
   .param('pid', function* (pid, next) {
     this.pid = parseInt(pid);
     yield next;
   })
-  .get('/posts/', postCtrl.index)
-  .post('/posts/', postCtrl.create)
-  .get('/posts/:pid', postCtrl.show)
-  .delete('/posts/:pid', postCtrl.destroy)
-
+  .get('/', postCtrl.index)
+  .post('/', postCtrl.create)
+  .get('/:pid', postCtrl.show)
+  .delete('/:pid', postCtrl.destroy)
 ;
+
+router.use('/users', usersRouter.routes());
+router.use('/posts', postsRouter.routes());
 
 module.exports = router;
