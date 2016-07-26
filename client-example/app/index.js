@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import Main from './main';
+import App from './app';
 
-import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
+require('react-tap-event-plugin')();
+require('normalize-css');
 
-ReactDom.render(<Main />, document.getElementById('main'));
+ReactDom.render(<App />, document.getElementById('main'));
 
