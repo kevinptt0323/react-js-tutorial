@@ -5,5 +5,5 @@ import App from './app';
 require('react-tap-event-plugin')();
 require('normalize-css');
 
-ReactDom.render(<App />, document.getElementById('main'));
+ReactDom.render(<App />, document.getElementById('app'));
 
