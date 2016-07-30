@@ -5,12 +5,12 @@ function* index(next) {
   if (this.username) {
     const { username } = this;
     let user = (yield userCol.findOne({ username })) || {};
-    posts = yield postCol.find({ uid: user._id });
+    posts = yield postCol.find({ uid: user._id }, { sort: { created_at: -1 } });
     for (let i in posts) {
       posts[i].username = username;
     }
   } else {
-    posts = yield postCol.find({ });
+    posts = yield postCol.find({}, { sort: { created_at: -1 } });
     for (let i in posts) {
       posts[i].username = (yield userCol.findOne({ _id: posts[i].uid })).username;
     }
