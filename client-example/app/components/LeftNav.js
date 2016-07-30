@@ -2,37 +2,47 @@ import React, { PropTypes } from 'react';
 import { Drawer } from 'material-ui';
 import LeftNavItem from './LeftNavItem';
 
-import List from 'material-ui/svg-icons/action/list';
+import UserPage from 'material-ui/svg-icons/action/account-box';
+import NewsFeeds from 'material-ui/svg-icons/action/picture-in-picture';
 
 class LeftNav extends React.Component {
   constructor(props) {
     super(props);
     this.handleToggle = this.handleToggle.bind(this);
-    this.onMenuListTap = this.onMenuListTap.bind(this);
 
     this.state = {
       open: false,
-      menuItems: [
-        {
-          route: '/files',
-          text: 'File List',
-          icon: (<List />)
-        },
-      ]
     };
+    this.menuItems = [
+      {
+        text: 'News Feed',
+        icon: (<NewsFeeds />),
+        onClick: () => {
+          this.props.loadPosts('/posts');
+        }
+      },
+      {
+        text: 'My Page',
+        icon: (<UserPage />),
+        onClick: () => {
+          this.props.loadPosts('/u/kevinptt/posts');
+        }
+      },
+    ];
   }
   handleToggle() {
     this.setState({ open: !this.state.open });
   }
-  onMenuListTap() {
+  onMenuListTap(fn) {
+    fn.apply(this);
     this.handleToggle();
   }
   render() {
-    const menuLists = this.state.menuItems.map((data, index) => (
+    const menuLists = this.menuItems.map((data, index) => (
       <LeftNavItem
         key={index}
         primaryText={data.text}
-        handleClick={this.onMenuListTap}
+        handleClick={this.onMenuListTap.bind(this, data.onClick)}
         leftIcon={data.icon}
         route={data.route}
         isActive={false}

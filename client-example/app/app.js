@@ -21,6 +21,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.onLeftIconButtonTouchTap = this.onLeftIconButtonTouchTap.bind(this);
+    this.loadPosts = this.loadPosts.bind(this);
 
     this.state = {
       logined: false,
@@ -32,7 +33,8 @@ class App extends React.Component {
   onLeftIconButtonTouchTap() {
     this.refs.leftNav.handleToggle();
   }
-  loadPosts(url = '/api/posts') {
+  loadPosts(url = '/posts') {
+    url = '/api' + url;
     request.get(url)
       .use(server)
       .accept('json')
@@ -53,7 +55,7 @@ class App extends React.Component {
             style={{ position: 'fixed' }}
             title="Hello, world!"
           />
-          <LeftNav ref="leftNav" />
+          <LeftNav loadPosts={this.loadPosts} ref="leftNav" />
           <div
             style={{
               position: 'relative',

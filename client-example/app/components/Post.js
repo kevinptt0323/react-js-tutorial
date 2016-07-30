@@ -35,7 +35,7 @@ class PostList extends React.Component {
       <Paper>
       {
         this.props.posts.map((elem) => (
-          <Post data={elem} />
+          <Post key={elem._id} data={elem} />
         ))
       }
       </Paper>
