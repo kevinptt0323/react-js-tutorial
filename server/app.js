@@ -2,6 +2,7 @@ const koa = require('koa');
 const koaBody = require('koa-body')();
 const db = require('monk')('localhost/react-js-tutorial')
 const wrap = require('co-monk');
+const cors = require('koa-cors');
 
 const siteRoute = require('./siteRoute')
 const apiRoute  = require('./apiRoute')
@@ -15,6 +16,7 @@ app.context.getCollection = function(name) {
 };
 
 app
+  .use(cors())
   .use(koaBody)
   .use(siteRoute.routes())
   .use(siteRoute.allowedMethods())
