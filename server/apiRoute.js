@@ -34,7 +34,7 @@ postsRouter
   .delete('/:pid', postCtrl.destroy)
 ;
 
-router.use('/users', usersRouter.routes());
+router.use('/u', usersRouter.routes());
 router.use('/posts', postsRouter.routes());
 
 module.exports = router;
