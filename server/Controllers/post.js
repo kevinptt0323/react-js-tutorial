@@ -1,13 +1,19 @@
 function* index(next) {
   const postCol = this.getCollection('posts');
+  const userCol = this.getCollection('users')
   let posts = {};
   if (this.username) {
-    const userCol = this.getCollection('users')
     const { username } = this;
     let user = (yield userCol.findOne({ username })) || {};
     posts = yield postCol.find({ uid: user._id });
+    for (let i in posts) {
+      posts[i].username = username;
+    }
   } else {
     posts = yield postCol.find({ });
+    for (let i in posts) {
+      posts[i].username = (yield userCol.findOne({ _id: posts[i].uid })).username;
+    }
   }
   this.body = posts;
   yield next;
