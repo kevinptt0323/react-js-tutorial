@@ -3,7 +3,7 @@ import AppBar from 'material-ui/AppBar';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { lightGreen400 } from 'material-ui/styles/colors';
-import PostList from './components/PostList';
+import { PostList } from './components/Post';
 
 import request from 'superagent';
 import prefix from 'superagent-prefix';

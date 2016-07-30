@@ -13,7 +13,7 @@ class Post extends React.Component {
         <CardHeader
           title={post.username}
           subtitle={post.created_at}
-          avatar="http://lorempixel.com/100/100/nature/"
+          avatar={`http://lorempixel.com/100/100/nature/?uid=${post.uid}`}
         />
         <CardText>
           {post.content}
@@ -43,5 +43,5 @@ class PostList extends React.Component {
   }
 }
 
-export { Post };
+export { Post, PostList };
 export default PostList;
