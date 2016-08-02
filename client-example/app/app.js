@@ -12,6 +12,7 @@ import { PostDialog, PostList } from './components/Post';
 
 /* icons */
 import UserPage from 'material-ui/svg-icons/action/account-box';
+import Exit from 'material-ui/svg-icons/action/exit-to-app';
 import NewsFeeds from 'material-ui/svg-icons/action/picture-in-picture';
 import Person from 'material-ui/svg-icons/social/person';
 
@@ -31,30 +32,33 @@ class App extends React.Component {
     super(props);
     this.onLeftIconButtonTouchTap = this.onLeftIconButtonTouchTap.bind(this);
     this.onLoginItemClick = this.onLoginItemClick.bind(this);
+    this.onLogoutItemClick = this.onLogoutItemClick.bind(this);
     this.loadPosts = this.loadPosts.bind(this);
     this.showPost = this.showPost.bind(this);
+    this.postLogin = this.postLogin.bind(this);
 
     this.state = {
-      logined: false,
-      username: 'kevinptt',
+      isLogin: false,
+      username: '',
       posts: [],
-      menuItems: [
-        {
+      menuItems: {
+        newsFeed: {
           primaryText: 'News Feed',
           leftIcon: (<NewsFeeds />),
           onTouchTap: () => {
             this.loadPosts('/posts');
             this.refs.leftNav.handleToggle();
           }
-        }, {
+        },
+        myPage: {
           primaryText: 'My Page',
           leftIcon: (<UserPage />),
           onTouchTap: () => {
             this.loadPosts(`/u/${this.state.username}/posts`);
             this.refs.leftNav.handleToggle();
-          },
+          }
         }
-      ]
+      }
     };
 
     this.loadPosts();
@@ -65,6 +69,10 @@ class App extends React.Component {
   onLoginItemClick() {
     this.refs.leftNav.handleToggle();
     this.refs.loginDialog.onRequestClose();
+  }
+  onLogoutItemClick() {
+    this.refs.leftNav.handleToggle();
+    this.setState({ isLogin: false, username: '' });
   }
   loadPosts(url = '/posts') {
     url = '/api' + url;
@@ -84,6 +92,10 @@ class App extends React.Component {
     this.setState({ currentPost: post });
     this.refs.postDialog.onRequestClose();
   }
+  postLogin(data) {
+    this.setState({ isLogin: true, username: data.username });
+    this.refs.loginDialog.onRequestClose();
+  }
   render() {
     const fullSize = {
       width: '100vw',
@@ -94,17 +106,23 @@ class App extends React.Component {
       height: 'calc(100% - 64px)',
       top: '64px'
     };
-    const menuList = this.state.menuItems.map(({menuItem: MenuItem=null, ...data}, index) => (
-      MenuItem ?
-        MenuItem :
-        <LeftNavItem key={index} {...data} />
-    ));
-    const LoginItem = (
-      <LeftNavItem
-        primaryText="Login"
-        onTouchTap={this.onLoginItemClick}
-        leftIcon={(<Person />)}
-      />);
+    const menuList = [];
+    menuList.push(<LeftNavItem key="0" {...this.state.menuItems.newsFeed} />);
+    if (this.state.isLogin)
+      menuList.push(<LeftNavItem key="1" {...this.state.menuItems.myPage} />);
+    const LoginLogoutItem = (
+      this.state.isLogin ?
+        <LeftNavItem
+          primaryText="Logout"
+          onTouchTap={this.onLogoutItemClick}
+          leftIcon={(<Exit />)}
+        /> :
+        <LeftNavItem
+          primaryText="Login"
+          onTouchTap={this.onLoginItemClick}
+          leftIcon={(<Person />)}
+        />
+      );
 
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
@@ -117,13 +135,13 @@ class App extends React.Component {
           <LeftNav ref="leftNav" username={this.state.username}>
             {menuList}
             <Divider />
-            {LoginItem}
+            {LoginLogoutItem}
           </LeftNav>
           <div style={containerStyle}>
             <PostList showPost={this.showPost} posts={this.state.posts} />
           </div>
           <PostDialog ref="postDialog" data={this.state.currentPost} />
-          <LoginDialog ref="loginDialog" prefix={prefix} />
+          <LoginDialog ref="loginDialog" postLogin={this.postLogin} server={server} />
         </div>
       </MuiThemeProvider>
     );

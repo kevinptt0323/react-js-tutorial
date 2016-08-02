@@ -48,29 +48,25 @@ class LoginForm extends React.Component {
         this._checkEmpty(field, null, resolve, reject);
       })
     ;
-    let { onLogin } = this.props;
     check('username')
       .then(() => check('password'), () => check('password'))
       .then(() => {
-        let data = {
-          account: this.state.inputData.username,
-          passwd: this.state.inputData.password
-        };
+        const { username, password } = this.state.inputData;
         request.post('/api/login')
-          .send(data)
-          .use(this.props.prefix)
+          .send({ username, password })
+          .use(this.props.server)
           .accept('json')
           .end((err, res) => {
             if( err ) {
               console.error(err);
+              this.setState({ errorText: { overall: "登入失敗" }})
             } else {
-              this.props.setToken(res.body.data.token, onLogin);
+              this.props.postLogin(res.body);
             }
           });
       }, () => {
         console.error("failed");
-      })
-      ;
+      });
   }
   render() {
     return (
@@ -93,8 +89,11 @@ class LoginForm extends React.Component {
           fullWidth={true}
           onChange={this._checkEmpty.bind(this, 'password')}
         />
-        <div style={{marginTop: 24, display: 'inline-block'}}>
+        <div style={{ margin: '24px 0 12px', textAlign: 'center' }}>
           <RaisedButton label="Login" primary={true} onTouchTap={this.login} />
+        </div>
+        <div style={{ textAlign: 'center', color: 'red', fontSize: '12px' }}>
+          { this.state.errorText.overall }
         </div>
       </div>
     );
@@ -113,6 +112,7 @@ class LoginDialog extends React.Component {
     this.setState({ open })
   }
   render() {
+    const { data, postLogin, server } = this.props;
     return (
       <Dialog
         open={this.state.open}
@@ -121,7 +121,7 @@ class LoginDialog extends React.Component {
         contentStyle={{ width: '400' }}
       >
         <LoginForm
-          data={this.props.data}
+          {...{data, postLogin, server}}
         />
       </Dialog>
     );
