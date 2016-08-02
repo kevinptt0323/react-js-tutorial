@@ -1,13 +1,23 @@
 import React from 'react';
+import request from 'superagent';
+import prefix from 'superagent-prefix';
+
+/* material-ui */
 import AppBar from 'material-ui/AppBar';
+import Divider from 'material-ui/Divider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { lightGreen400 } from 'material-ui/styles/colors';
 import { PostDialog, PostList } from './components/Post';
-import LeftNav from './components/LeftNav';
 
-import request from 'superagent';
-import prefix from 'superagent-prefix';
+/* icons */
+import UserPage from 'material-ui/svg-icons/action/account-box';
+import NewsFeeds from 'material-ui/svg-icons/action/picture-in-picture';
+import Person from 'material-ui/svg-icons/social/person';
+
+/* components */
+import LeftNav from './components/LeftNav';
+import LeftNavItem from './components/LeftNavItem';
 
 const server = prefix('http://localhost:3000');
 
@@ -26,7 +36,29 @@ class App extends React.Component {
 
     this.state = {
       logined: false,
-      posts: []
+      posts: [],
+      menuItems: [
+        {
+          text: 'News Feed',
+          icon: (<NewsFeeds />),
+          onClick: () => {
+            this.loadPosts('/posts');
+          }
+        }, {
+          text: 'My Page',
+          icon: (<UserPage />),
+          onClick: () => {
+            this.loadPosts('/u/kevinptt/posts');
+          }
+        }, {
+          menuItem: (<Divider />)
+        }, {
+          text: 'Login',
+          icon: (<Person />),
+          onClick: () => {
+          }
+        },
+      ]
     };
 
     this.loadPosts();
@@ -62,6 +94,18 @@ class App extends React.Component {
       height: 'calc(100% - 64px)',
       top: '64px'
     };
+    const menuList = this.state.menuItems.map(({menuItem: MenuItem=null, ...data}, index) => (
+      MenuItem ?
+        MenuItem :
+        <LeftNavItem
+          key={index}
+          primaryText={data.text}
+          handleClick={data.onClick}
+          leftIcon={data.icon}
+          route={data.route}
+          isActive={false}
+        />
+    ));
 
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
@@ -71,7 +115,9 @@ class App extends React.Component {
             style={{ position: 'fixed' }}
             title="Hello, world!"
           />
-          <LeftNav loadPosts={this.loadPosts} ref="leftNav" />
+          <LeftNav ref="leftNav">
+            {menuList}
+          </LeftNav>
           <div style={containerStyle}>
             <PostList showPost={this.showPost} posts={this.state.posts} />
           </div>
