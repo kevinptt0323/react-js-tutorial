@@ -16,8 +16,7 @@ import NewsFeeds from 'material-ui/svg-icons/action/picture-in-picture';
 import Person from 'material-ui/svg-icons/social/person';
 
 /* components */
-import LeftNav from './components/LeftNav';
-import LeftNavItem from './components/LeftNavItem';
+import { LeftNav, LeftNavItem } from './components/LeftNav';
 import { LoginDialog } from './components/Login';
 
 const server = prefix('http://localhost:3000');
@@ -37,22 +36,23 @@ class App extends React.Component {
 
     this.state = {
       logined: false,
+      username: 'kevinptt',
       posts: [],
       menuItems: [
         {
-          text: 'News Feed',
-          icon: (<NewsFeeds />),
-          onClick: () => {
+          primaryText: 'News Feed',
+          leftIcon: (<NewsFeeds />),
+          onTouchTap: () => {
             this.loadPosts('/posts');
             this.refs.leftNav.handleToggle();
           }
         }, {
-          text: 'My Page',
-          icon: (<UserPage />),
-          onClick: () => {
-            this.loadPosts('/u/kevinptt/posts');
+          primaryText: 'My Page',
+          leftIcon: (<UserPage />),
+          onTouchTap: () => {
+            this.loadPosts(`/u/${this.state.username}/posts`);
             this.refs.leftNav.handleToggle();
-          }
+          },
         }
       ]
     };
@@ -97,17 +97,12 @@ class App extends React.Component {
     const menuList = this.state.menuItems.map(({menuItem: MenuItem=null, ...data}, index) => (
       MenuItem ?
         MenuItem :
-        <LeftNavItem
-          key={index}
-          primaryText={data.text}
-          handleClick={data.onClick}
-          leftIcon={data.icon}
-        />
+        <LeftNavItem key={index} {...data} />
     ));
     const LoginItem = (
       <LeftNavItem
         primaryText="Login"
-        handleClick={this.onLoginItemClick}
+        onTouchTap={this.onLoginItemClick}
         leftIcon={(<Person />)}
       />);
 
@@ -119,7 +114,7 @@ class App extends React.Component {
             style={{ position: 'fixed' }}
             title="Hello, world!"
           />
-          <LeftNav ref="leftNav">
+          <LeftNav ref="leftNav" username={this.state.username}>
             {menuList}
             <Divider />
             {LoginItem}

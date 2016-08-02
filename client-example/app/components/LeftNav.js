@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Drawer from 'material-ui/Drawer';
+import MenuItem from 'material-ui/MenuItem';
 import { Card, CardMedia, CardTitle } from 'material-ui/Card';
 
 class LeftNav extends React.Component {
@@ -39,30 +40,11 @@ class LeftNav extends React.Component {
   }
 }
 
-class LeftNavItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.onMenuItemTap = this.onMenuItemTap.bind(this);
-  }
-  onMenuItemTap() {
-    const { handleClick } = this.props;
-    handleClick();
-  }
-  render() {
-    const { primaryText, leftIcon, route } = this.props;
-    const props = { primaryText, leftIcon };
-    return (
-      <MenuItem
-        onTouchTap={this.onMenuItemTap}
-        {...props}
-      />
-    );
-  }
-}
-
-LeftNavItem.propTypes = {
-  primaryText: PropTypes.string.isRequired,
-};
+const LeftNavItem = props => (
+  <MenuItem
+    {...props}
+  />
+);
 
 export { LeftNav, LeftNavItem };
 
