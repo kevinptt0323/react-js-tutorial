@@ -52,9 +52,28 @@ function* destroy(next) {
   yield next;
 }
 
+function* login(next) {
+  const userCol = this.getCollection('users');
+  const { body: { username, password }=null } = this.request;
+  if (username && password) {
+    let user = (yield userCol.findOne({ username, password }));
+    if (user) {
+      this.body = user;
+    } else {
+      this.status = 401;
+      this.body = "Login Failed";
+    }
+  } else {
+    this.status = 401;
+    this.body = "Login Failed";
+  }
+  yield next;
+}
+
 module.exports = {
   index,
   create,
   show,
-  destroy
+  destroy,
+  login
 };

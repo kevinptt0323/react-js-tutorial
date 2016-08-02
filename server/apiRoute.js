@@ -36,5 +36,7 @@ postsRouter
 
 router.use('/u', usersRouter.routes());
 router.use('/posts', postsRouter.routes());
+router
+  .post('/login', userCtrl.login);
 
 module.exports = router;
