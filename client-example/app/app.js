@@ -18,9 +18,9 @@ import Person from 'material-ui/svg-icons/social/person';
 /* components */
 import LeftNav from './components/LeftNav';
 import LeftNavItem from './components/LeftNavItem';
+import { LoginDialog } from './components/Login';
 
 const server = prefix('http://localhost:3000');
-
 const muiTheme = getMuiTheme({
   palette: {
     primary1Color: lightGreen400,
@@ -31,6 +31,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.onLeftIconButtonTouchTap = this.onLeftIconButtonTouchTap.bind(this);
+    this.onLoginItemClick = this.onLoginItemClick.bind(this);
     this.loadPosts = this.loadPosts.bind(this);
     this.showPost = this.showPost.bind(this);
 
@@ -43,21 +44,16 @@ class App extends React.Component {
           icon: (<NewsFeeds />),
           onClick: () => {
             this.loadPosts('/posts');
+            this.refs.leftNav.handleToggle();
           }
         }, {
           text: 'My Page',
           icon: (<UserPage />),
           onClick: () => {
             this.loadPosts('/u/kevinptt/posts');
+            this.refs.leftNav.handleToggle();
           }
-        }, {
-          menuItem: (<Divider />)
-        }, {
-          text: 'Login',
-          icon: (<Person />),
-          onClick: () => {
-          }
-        },
+        }
       ]
     };
 
@@ -65,6 +61,10 @@ class App extends React.Component {
   }
   onLeftIconButtonTouchTap() {
     this.refs.leftNav.handleToggle();
+  }
+  onLoginItemClick() {
+    this.refs.leftNav.handleToggle();
+    this.refs.loginDialog.onRequestClose();
   }
   loadPosts(url = '/posts') {
     url = '/api' + url;
@@ -82,7 +82,7 @@ class App extends React.Component {
   showPost(post) {
     console.log('showPost');
     this.setState({ currentPost: post });
-    this.refs.postDialog.toggle();
+    this.refs.postDialog.onRequestClose();
   }
   render() {
     const fullSize = {
@@ -102,10 +102,14 @@ class App extends React.Component {
           primaryText={data.text}
           handleClick={data.onClick}
           leftIcon={data.icon}
-          route={data.route}
-          isActive={false}
         />
     ));
+    const LoginItem = (
+      <LeftNavItem
+        primaryText="Login"
+        handleClick={this.onLoginItemClick}
+        leftIcon={(<Person />)}
+      />);
 
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
@@ -117,11 +121,14 @@ class App extends React.Component {
           />
           <LeftNav ref="leftNav">
             {menuList}
+            <Divider />
+            {LoginItem}
           </LeftNav>
           <div style={containerStyle}>
             <PostList showPost={this.showPost} posts={this.state.posts} />
           </div>
           <PostDialog ref="postDialog" data={this.state.currentPost} />
+          <LoginDialog ref="loginDialog" prefix={prefix} />
         </div>
       </MuiThemeProvider>
     );

@@ -24,8 +24,6 @@ class LeftNavItem extends React.Component {
 
 LeftNavItem.propTypes = {
   primaryText: PropTypes.string.isRequired,
-  isActive: PropTypes.bool.isRequired,
-  handleClick: PropTypes.func.isRequired,
 };
 
 export default LeftNavItem;

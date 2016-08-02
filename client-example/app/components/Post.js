@@ -91,14 +91,14 @@ class PostDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = { open: false };
-    this.onRequestClose = this.toggle.bind(this, false);
+    this.onRequestClose = this.onRequestClose.bind(this);
     this.customContentStyle = {
       width: '80%',
       minWidth: '360px',
       maxWidth: 'none'
     };
   }
-  toggle(open = !this.state.open) {
+  onRequestClose(open = !this.state.open) {
     this.setState({ open })
   }
   render() {
@@ -119,4 +119,3 @@ class PostDialog extends React.Component {
 }
 
 export { Post, PostDialog, PostList };
-export default PostList;
