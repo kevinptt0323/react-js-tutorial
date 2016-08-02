@@ -1,9 +1,14 @@
 import React from 'react';
+import Dialog from 'material-ui/Dialog';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
 import Paper from 'material-ui/Paper';
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
+
+import OpenInNew from 'material-ui/svg-icons/action/open-in-new';
+
 class Post extends React.Component {
   constructor(props) {
     super(props);
@@ -12,6 +17,7 @@ class Post extends React.Component {
     }
     this.handleCommentChange = this.handleCommentChange.bind(this);
     this.handleSendButtonClick = this.handleSendButtonClick.bind(this);
+    this.onFullscreen = this.onFullscreen.bind(this);
   }
   handleCommentChange(e) {
     this.setState({
@@ -20,15 +26,30 @@ class Post extends React.Component {
   }
   handleSendButtonClick(e) {
   }
+  onFullscreen(e) {
+    this.props.showPost(this.props.data);
+  }
   render() {
     const { data: post = {} } = this.props;
     return (
-      <Card zIndex={1} style={{ marginBottom: '1em' }}>
+      <Card style={this.props.style}>
         <CardHeader
           title={post.username}
           subtitle={post.created_at}
           avatar={`http://lorempixel.com/100/100/nature/?uid=${post.uid}`}
-        />
+        >
+          <div style={{ position: 'relative', float: 'right', display: 'inline-block' }}>
+            <div style={{ position: 'absolute', right: 0 }}>
+              <IconButton
+                iconStyle={{ width: 20, height: 20 }}
+                style={{ width: 40, height: 40, padding: 10 }}
+                onTouchTap={this.onFullscreen}
+              >
+                <OpenInNew />
+              </IconButton>
+            </div>
+          </div>
+        </CardHeader>
         <Divider />
         <CardText>
           {post.content}
@@ -53,7 +74,12 @@ class PostList extends React.Component {
       <Paper>
       {
         this.props.posts.map((elem) => (
-          <Post key={elem._id} data={elem} />
+          <Post
+            key={elem._id}
+            data={elem}
+            showPost={this.props.showPost}
+            style={{ marginBottom: '1em' }}
+          />
         ))
       }
       </Paper>
@@ -61,5 +87,36 @@ class PostList extends React.Component {
   }
 }
 
-export { Post, PostList };
+class PostDialog extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { open: false };
+    this.onRequestClose = this.toggle.bind(this, false);
+    this.customContentStyle = {
+      width: '80%',
+      minWidth: '360px',
+      maxWidth: 'none'
+    };
+  }
+  toggle(open = !this.state.open) {
+    this.setState({ open })
+  }
+  render() {
+    return (
+      <Dialog
+        open={this.state.open}
+        modal={false}
+        onRequestClose={this.onRequestClose}
+        bodyStyle={{ padding: '0' }}
+        contentStyle={this.customContentStyle}
+      >
+        <Post
+          data={this.props.data}
+        />
+      </Dialog>
+    );
+  }
+}
+
+export { Post, PostDialog, PostList };
 export default PostList;
