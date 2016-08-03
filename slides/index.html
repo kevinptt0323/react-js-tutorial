@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+
+	<title>React.JS</title>
+
+	<meta name="description" content="Introduction to React">
+	<meta name="author" content="Kevin Lin">
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/serif.css" id="theme">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement( 'link' );
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName( 'head' )[0].appendChild( link );
+	</script>
+
+	<!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
+
+	<style>
+img {
+	border: none !important;
+}
+span.bold {
+	font-weight: bold;
+}
+span.italic {
+	font-style: italic;
+}
+span.underline {
+	text-decoration: underline;
+}
+span.upper {
+	text-transform: uppercase;
+}
+	</style>
+</head>
+
+<body>
+
+<div class="reveal">
+
+	<!-- Any section element inside of this container is displayed as a slide -->
+	<div class="slides">
+		<section>
+			<img style="width: 30%" src="https://facebook.github.io/react/img/logo.svg" />
+			<h1>React.JS</h1>
+			<p>
+				Created by <a href="https://github.com/kevinptt0323">Kevin Lin</a>
+			</p>
+		</section>
+
+		<section>
+			<section>
+				<h2>React.JS</h2>
+				<h4>來自 Facebook 的 Javascript <span class="bold underline">Library</span></h4>
+			</section>
+			<section>
+				<ul>
+					<li>Airbnb</li>
+					<li>Facebook</li>
+					<li>Instagram</li>
+					<li>Junyi</li>
+					<li><a href="https://github.com/facebook/react/wiki/Sites-Using-React" target="_blank">More...</a></li>
+				</ul>
+			</section>
+			<section>
+				<ul>
+					<li>JSX</li>
+					<li>Virtual DOM</li>
+					<li>Components</li>
+					<li>one-way data flow <span class="italic">(also called one-way binding)</span></li>
+				</ul>
+			</section>
+		</section>
+
+		<!-- Example of nested vertical slides -->
+		<section>
+			<section>
+				<h2>JSX</h2>
+				<h4>Write HTML inside javascript</h4>
+				<pre><code class="lang-javascript">
+let username = 'kevinptt';
+ReactDOM.render((
+  &lt;div&gt;
+    &lt;h1&gt;Hello, {username}!&lt;/h1&gt;
+  &lt;/div&gt;
+), document.getElementById('app'));
+				</code></pre>
+			</section>
+			<section>
+				<h4><span class="upper">without</span> JSX</h4>
+				<pre><code class="lang-javascript">
+let username = 'kevinptt';
+ReactDOM.render(
+  React.createElement('div', null, 
+    React.createElement('h1', null, `Hello, ${username}!`)
+  ),
+  document.getElementById('app')
+);
+				</code></pre>
+			</section>
+			<section>
+				<h4>write javascript <span class="upper">inside</span> "<span class="bold">{ }</span>"</h4>
+				<pre><code class="lang-javascript">
+let checked = true;
+ReactDOM.render((
+  &lt;h1 className={checked ? 'show' : 'hide'}&gt;Hello, world!&lt;/h1&gt;
+), document.getElementById('app'));
+				</code></pre>
+			</section>
+			<section>
+				<pre><code class="lang-javascript">
+var arr = [
+  &lt;h1&gt;Hello world!&lt;/h1&gt;,
+  &lt;h2&gt;React is awesome&lt;/h2&gt;,
+];
+ReactDOM.render(
+  &lt;div&gt;{arr}&lt;/div&gt;,
+  document.getElementById('app')
+);
+				</code></pre>
+			</section>
+		</section>
+
+		<section>
+			<section>
+				<h2>Virtual DOM</h2>
+				<h4>React processes Virtual DOMs in memory instead of real DOMs in DOM tree.</h4>
+			</section>
+			<section>
+				<h4>DOM is <span class="upper">heavy</span></h4>
+				<img src="https://camo.githubusercontent.com/99c6493c947b4b543e47cca917303af5c876a7f8/687474703a2f2f6c69766f7261732e6769746875622e696f2f626c6f672f7669727475616c2d646f6d2f646f6d2d617474726962757465732e706e67" />
+				<p>
+					<span class="fragment">Store node in the javascript!</span>
+				</p>
+			</section>
+			<section>
+				<p><a href="https://github.com/livoras/blog/issues/13" target="_blank">深度剖析：如何实现一个 Virtual DOM 算法</a></p>
+			</section>
+		</section>
+
+		<section>
+			<section>
+				<h2>Components</h2>
+				<h4>Write once, use anywhere</h4>
+			</section>
+			<section>
+				<img src="http://i.imgur.com/dfw09ZP.png" />
+			</section>
+			<section>
+				<pre><code class="lang-html">
+render() {
+  return (
+    this.state.cards.map(card => (
+      &lt;PromoCard
+        src={data.src}
+        title={data.title}
+        text={data.text}
+        href={data.href}
+        /&gt;
+    ))
+  );
+}
+				</code></pre>
+			</section>
+			<section>
+				<p>
+					<a href="http://www.material-ui.com/" target="_blank">Material-UI</a>
+				</p>
+			</section>
+		</section>
+
+		<section>
+			<section>
+				<h2>one-way data flow</h2>
+			</section>
+			<section>
+				<h2>no data flow</h2>
+				<p><a href="https://codepen.io/kevinptt/pen/WxgWYg" target="_blank">jQuery Example</a></p>
+			</section>
+			<section>
+				<h2>one-way data flow</h2>
+				<p><a href="https://codepen.io/kevinptt/pen/jAvdLg" target="_blank">jQuery Example</a></p>
+			</section>
+			<section>
+				<h2>two-way data flow</h2>
+				<p><a href="https://codepen.io/kevinptt/pen/jAvdQP" target="_blank">AngularJS Example</a></p>
+				<img src="http://i.stack.imgur.com/ylFmG.png" />
+			</section>
+			<section>
+				<h2>one-way data flow</h2>
+				<p><a href="https://codepen.io/kevinptt/pen/GqXZRL" target="_blank">React Example</a></p>
+				<img src="http://reactjs.cn/react/img/blog/tutsplus.png" />
+			</section>
+			<section>
+				<ul>
+					<li><a href="https://facebook.github.io/flux/" target="_blank">Flux</a></li>
+					<li><a href="http://chentsulin.github.io/redux-intro/" target="_blank">Redux-intro</a></li>
+				</ul>
+			</section>
+		</section>
+
+		<section>
+			<h2>Life cycle</h2>
+			<img src="img/react-lifecycle.png" style="max-height: 60vh" />
+		</section>
+
+		<section>
+			<h1>Let's start coding!</h1>
+		</section>
+
+		<section>
+			<section>
+				<h2>Left Nav</h2>
+				<p>
+					<ul>
+						<li class="fragment">import modules &amp; JSX</li>
+						<li class="fragment">parent to child: state</li>
+						<li class="fragment">sibling to sibling: refs</li>
+					</ul>
+				</p>
+			</section>
+			<section>
+				<h2>New User &amp; Login</h2>
+				<p>
+					<ul>
+						<li class="fragment">NewUserDialog</li>
+						<li class="fragment">LeftNavItem and props.onTouchTap</li>
+						<li class="fragment">switch between login and logout button</li>
+					</ul>
+				</p>
+			</section>
+			<section>
+				<h2>post list</h2>
+				<p>
+					<ul>
+						<li class="fragment">return array of Post</li>
+						<li class="fragment">child to parent: onFullscreen</li>
+						<li class="fragment">personal post list</li>
+						<li class="fragment">PostBoard</li>
+					</ul>
+				</p>
+			</section>
+		</section>
+
+		<section>
+			<h2>React Native</h2>
+			<blockquote>
+				Learn once, write anywhere.
+			</blockquote>
+		</section>
+
+		<section>
+			<h2>Thanks</h2>
+		</section>
+	</div>
+
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+	// More info https://github.com/hakimel/reveal.js#configuration
+	Reveal.initialize({
+		controls: true,
+		progress: true,
+		history: true,
+		center: true,
+
+		transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+		// More info https://github.com/hakimel/reveal.js#dependencies
+		dependencies: [
+			{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+			{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+			{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+			{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+			{ src: 'plugin/zoom-js/zoom.js', async: true },
+			{ src: 'plugin/notes/notes.js', async: true }
+		]
+	});
+
+</script>
+
+</body>
+</html>
