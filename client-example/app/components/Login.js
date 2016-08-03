@@ -2,6 +2,8 @@ import React from 'react';
 import update from 'react-addons-update';
 import { Avatar, Dialog, TextField, RaisedButton, CircularProgress } from 'material-ui';
 
+import LoadingComponent from './LoadingComponent';
+
 import request from 'superagent';
 
 class LoginForm extends React.Component {
@@ -74,15 +76,6 @@ class LoginForm extends React.Component {
       });
   }
   render() {
-    const LoginButton = (this.state.waiting ?
-      <CircularProgress /> :
-      <div>
-        <RaisedButton label="Login" primary={true} onTouchTap={this.login} />
-        <div style={{ color: 'red', fontSize: '12px', marginTop: 12 }}>
-          { this.state.errorText.overall }
-        </div>
-      </div>
-    );
     return (
       <div style={{
         display: 'flex',
@@ -104,7 +97,15 @@ class LoginForm extends React.Component {
           onChange={this._checkEmpty.bind(this, 'password')}
         />
         <div style={{ marginTop: 24, textAlign: 'center' }}>
-          {LoginButton}
+          <LoadingComponent loading={this.state.waiting}>
+            <div>
+              <RaisedButton label="Login" primary={true} onTouchTap={this.login} />
+              <div style={{ color: 'red', fontSize: '12px', marginTop: 12 }}>
+                { this.state.errorText.overall }
+              </div>
+            </div>
+          </LoadingComponent>
+
         </div>
       </div>
     );
