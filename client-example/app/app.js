@@ -19,7 +19,7 @@ import Person from 'material-ui/svg-icons/social/person';
 /* components */
 import { LeftNav, LeftNavItem } from './components/LeftNav';
 import { LoginDialog } from './components/Login';
-import { PostDialog, PostList } from './components/Post';
+import { PostDialog, PostList, PostBoard } from './components/Post';
 
 const server = prefix('http://localhost:3000');
 const muiTheme = getMuiTheme({
@@ -104,7 +104,8 @@ class App extends React.Component {
   render() {
     const fullSize = {
       width: '100vw',
-      height: '100vh'
+      height: '100vh',
+      position: 'absolute'
     };
     const containerStyle = {
       position: 'relative',
@@ -145,6 +146,7 @@ class App extends React.Component {
             {LoginLogoutItem}
           </LeftNav>
           <div style={containerStyle}>
+            <PostBoard style={{ margin: '1em' }} />
             <PostList showPost={this.showPost} posts={this.state.posts} />
           </div>
           <PostDialog ref="postDialog" data={this.state.currentPost} />

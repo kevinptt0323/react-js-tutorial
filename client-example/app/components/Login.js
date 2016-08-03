@@ -89,10 +89,10 @@ class LoginForm extends React.Component {
           fullWidth={true}
           onChange={this._checkEmpty.bind(this, 'password')}
         />
-        <div style={{ margin: '24px 0 12px', textAlign: 'center' }}>
+        <div style={{ marginTop: 24, textAlign: 'center' }}>
           <RaisedButton label="Login" primary={true} onTouchTap={this.login} />
         </div>
-        <div style={{ textAlign: 'center', color: 'red', fontSize: '12px' }}>
+        <div style={{ textAlign: 'center', color: 'red', fontSize: '12px', marginTop: 12 }}>
           { this.state.errorText.overall }
         </div>
       </div>

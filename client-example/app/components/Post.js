@@ -3,6 +3,7 @@ import Dialog from 'material-ui/Dialog';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
@@ -71,18 +72,18 @@ class PostList extends React.Component {
   }
   render() {
     return (
-      <Paper>
+      <div>
       {
         this.props.posts.map((elem) => (
           <Post
             key={elem._id}
             data={elem}
             showPost={this.props.showPost}
-            style={{ marginBottom: '1em' }}
+            style={{ margin: '1em' }}
           />
         ))
       }
-      </Paper>
+      </div>
     );
   }
 }
@@ -118,4 +119,28 @@ class PostDialog extends React.Component {
   }
 }
 
-export { Post, PostDialog, PostList };
+class PostBoard extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <Card style={this.props.style}>
+        <CardActions>
+          <div style={{ flex: '1', display: 'flex', alignItems: 'center', paddingLeft: 5 }}>
+            <TextField
+              hintText="你好嗎？"
+              multiLine={true}
+              fullWidth={true}
+              rows={1}
+              style={{ marginRight: 16 }}
+            />
+            <RaisedButton primary={true} label="發送" />
+          </div>
+        </CardActions>
+      </Card>
+    );
+  }
+}
+
+export { Post, PostDialog, PostList, PostBoard };
