@@ -146,7 +146,16 @@ class App extends React.Component {
             {LoginLogoutItem}
           </LeftNav>
           <div style={containerStyle}>
-            {this.state.isLogin ? <PostBoard style={{ margin: '1em' }} hintText={`${this.state.username}，你好嗎？`} /> : null }
+            {
+              this.state.isLogin ?
+              <PostBoard
+                style={{ margin: '1em' }}
+                hintText={`${this.state.username}，你好嗎？`}
+                server={server}
+                loadPosts={this.loadPosts}
+                username={this.state.username}
+              /> : null
+            }
             <PostList showPost={this.showPost} posts={this.state.posts} />
           </div>
           <PostDialog ref="postDialog" data={this.state.currentPost} />

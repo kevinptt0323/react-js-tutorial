@@ -1,4 +1,6 @@
 import React from 'react';
+import request from 'superagent';
+
 import Dialog from 'material-ui/Dialog';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
@@ -9,6 +11,8 @@ import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 
 import OpenInNew from 'material-ui/svg-icons/action/open-in-new';
+
+import LoadingComponent from './LoadingComponent';
 
 class Post extends React.Component {
   constructor(props) {
@@ -53,7 +57,7 @@ class Post extends React.Component {
         </CardHeader>
         <Divider />
         <CardText>
-          {post.content}
+          <pre>{post.content}</pre>
         </CardText>
         <CardActions style={{ display: 'flex' }}>
           <div style={{ flex: '1', display: 'flex', alignItems: 'center', paddingLeft: '5px' }}>
@@ -122,8 +126,35 @@ class PostDialog extends React.Component {
 class PostBoard extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { sending: false };
+    this.updateContent = this.updateContent.bind(this);
+    this.send = this.send.bind(this);
+  }
+  updateContent(e) {
+    console.log(e.target.value);
+    this.setState({ content: e.target.value });
+  }
+  send() {
+    const data = {};
+    data.content = this.state.content;
+    data.username = this.props.username;
+    console.log(data);
+    request.post('/api/posts')
+      .send(data)
+      .use(this.props.server)
+      .accept('json')
+      .end((err, res) => {
+        if( err ) {
+          console.error(err);
+        } else {
+          this.props.loadPosts('/posts');
+          this.setState({ content: '' });
+        }
+        this.setState({ waiting: false });
+      });
   }
   render() {
+    const { server, loadPosts, username, ...props } = this.props;
     return (
       <Card style={this.props.style}>
         <CardActions>
@@ -133,9 +164,13 @@ class PostBoard extends React.Component {
               fullWidth={true}
               rows={1}
               style={{ marginRight: 16 }}
-              {...this.props}
+              onChange={this.updateContent}
+              value={this.state.content}
+              {...props}
             />
-            <RaisedButton primary={true} label="發送" />
+            <LoadingComponent loading={this.state.sending} size={0.5}>
+              <RaisedButton primary={true} label="發送" onTouchTap={this.send} />
+            </LoadingComponent>
           </div>
         </CardActions>
       </Card>
