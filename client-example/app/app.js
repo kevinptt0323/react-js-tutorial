@@ -5,10 +5,10 @@ import prefix from 'superagent-prefix';
 /* material-ui */
 import AppBar from 'material-ui/AppBar';
 import Divider from 'material-ui/Divider';
+import Subheader from 'material-ui/Subheader';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { lightGreen400 } from 'material-ui/styles/colors';
-import { PostDialog, PostList } from './components/Post';
 
 /* icons */
 import UserPage from 'material-ui/svg-icons/action/account-box';
@@ -19,6 +19,7 @@ import Person from 'material-ui/svg-icons/social/person';
 /* components */
 import { LeftNav, LeftNavItem } from './components/LeftNav';
 import { LoginDialog } from './components/Login';
+import { PostDialog, PostList } from './components/Post';
 
 const server = prefix('http://localhost:3000');
 const muiTheme = getMuiTheme({
@@ -40,6 +41,7 @@ class App extends React.Component {
     this.state = {
       isLogin: false,
       username: '',
+      title: '最新文章',
       posts: [],
       menuItems: {
         newsFeed: {
@@ -47,6 +49,7 @@ class App extends React.Component {
           leftIcon: (<NewsFeeds />),
           onTouchTap: () => {
             this.loadPosts('/posts');
+            this.setState({ title: '最新文章' });
             this.refs.leftNav.handleToggle();
           }
         },
@@ -55,13 +58,14 @@ class App extends React.Component {
           leftIcon: (<UserPage />),
           onTouchTap: () => {
             this.loadPosts(`/u/${this.state.username}/posts`);
+            this.setState({ title: '我的文章' });
             this.refs.leftNav.handleToggle();
           }
         }
       }
     };
 
-    this.loadPosts();
+    this.loadPosts('/posts');
   }
   onLeftIconButtonTouchTap() {
     this.refs.leftNav.handleToggle();
@@ -73,6 +77,7 @@ class App extends React.Component {
   onLogoutItemClick() {
     this.refs.leftNav.handleToggle();
     this.setState({ isLogin: false, username: '' });
+    this.loadPosts('/posts');
   }
   loadPosts(url = '/posts') {
     url = '/api' + url;
@@ -106,6 +111,7 @@ class App extends React.Component {
       height: 'calc(100% - 64px)',
       top: '64px'
     };
+    const subheaderStyle = { lineHeight: '36px' };
     const menuList = [];
     menuList.push(<LeftNavItem key="0" {...this.state.menuItems.newsFeed} />);
     if (this.state.isLogin)
@@ -130,11 +136,12 @@ class App extends React.Component {
           <AppBar
             onLeftIconButtonTouchTap={this.onLeftIconButtonTouchTap}
             style={{ position: 'fixed' }}
-            title="Hello, world!"
+            title={this.state.title}
           />
           <LeftNav ref="leftNav" username={this.state.username}>
             {menuList}
             <Divider />
+            <Subheader style={subheaderStyle}>帳號管理</Subheader>
             {LoginLogoutItem}
           </LeftNav>
           <div style={containerStyle}>
