@@ -129,11 +129,11 @@ class PostBoard extends React.Component {
         <CardActions>
           <div style={{ flex: '1', display: 'flex', alignItems: 'center', paddingLeft: 5 }}>
             <TextField
-              hintText="你好嗎？"
               multiLine={true}
               fullWidth={true}
               rows={1}
               style={{ marginRight: 16 }}
+              {...this.props}
             />
             <RaisedButton primary={true} label="發送" />
           </div>
