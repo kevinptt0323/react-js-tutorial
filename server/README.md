@@ -18,16 +18,18 @@ This server example is based on [koa](http://koajs.com/) and [MongoDB](https://w
 
 #### User
 
-```{
-	"_id": "<random ID>",
-	"username": "user1",
-	"password": "user1"
+```
+{
+  "_id": "<random ID>",
+  "username": "user1",
+  "password": "user1"
 }
 ```
 
 #### Post
 
-```{
+```
+{
 	"_id": "<random ID>",
 	"pid": 1,
 	"uid": "<reference to a user ID>",
