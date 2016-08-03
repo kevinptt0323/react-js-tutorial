@@ -1,6 +1,6 @@
 import React from 'react';
 import update from 'react-addons-update';
-import { Avatar, Dialog, TextField, RaisedButton } from 'material-ui';
+import { Avatar, Dialog, TextField, RaisedButton, CircularProgress } from 'material-ui';
 
 import request from 'superagent';
 
@@ -9,6 +9,7 @@ class LoginForm extends React.Component {
     super(props);
     this.login = this.login.bind(this);
     this.state = {
+      waiting: false,
       inputData: { },
       errorText: { }
     };
@@ -29,11 +30,11 @@ class LoginForm extends React.Component {
     this.setState({
       errorText: errorText2,
       inputData: inputData2,
-      noEmptyInput: !!inputData2.username && !!inputData2.password
+      noEmptyInput: !!inputData2.username && !!inputData2.password,
     }, () => {
       if( this.state.noEmptyInput ) {
         if (typeof onFulfilled === 'function') {
-          onFulfilled();
+          setTimeout(onFulfilled, 1000);
         }
       } else {
         if (typeof onRejected === 'function') {
@@ -43,7 +44,8 @@ class LoginForm extends React.Component {
     });
   }
   login() {
-    let check = (field) =>
+    this.setState({ waiting: true });
+    const check = (field) =>
       new Promise((resolve, reject) => {
         this._checkEmpty(field, null, resolve, reject);
       })
@@ -51,6 +53,7 @@ class LoginForm extends React.Component {
     check('username')
       .then(() => check('password'), () => check('password'))
       .then(() => {
+        this.setState({errorText: { overall: '' }});
         const { username, password } = this.state.inputData;
         request.post('/api/login')
           .send({ username, password })
@@ -59,16 +62,27 @@ class LoginForm extends React.Component {
           .end((err, res) => {
             if( err ) {
               console.error(err);
-              this.setState({ errorText: { overall: "登入失敗" }})
+              this.setState({errorText: { overall: "登入失敗" }})
             } else {
               this.props.postLogin(res.body);
             }
+            this.setState({ waiting: false });
           });
       }, () => {
         console.error("failed");
+        this.setState({ waiting: false });
       });
   }
   render() {
+    const LoginButton = (this.state.waiting ?
+      <CircularProgress /> :
+      <div>
+        <RaisedButton label="Login" primary={true} onTouchTap={this.login} />
+        <div style={{ color: 'red', fontSize: '12px', marginTop: 12 }}>
+          { this.state.errorText.overall }
+        </div>
+      </div>
+    );
     return (
       <div style={{
         display: 'flex',
@@ -90,10 +104,7 @@ class LoginForm extends React.Component {
           onChange={this._checkEmpty.bind(this, 'password')}
         />
         <div style={{ marginTop: 24, textAlign: 'center' }}>
-          <RaisedButton label="Login" primary={true} onTouchTap={this.login} />
-        </div>
-        <div style={{ textAlign: 'center', color: 'red', fontSize: '12px', marginTop: 12 }}>
-          { this.state.errorText.overall }
+          {LoginButton}
         </div>
       </div>
     );
