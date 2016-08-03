@@ -15,10 +15,12 @@ import UserPage from 'material-ui/svg-icons/action/account-box';
 import Exit from 'material-ui/svg-icons/action/exit-to-app';
 import NewsFeeds from 'material-ui/svg-icons/action/picture-in-picture';
 import Person from 'material-ui/svg-icons/social/person';
+import PersonAdd from 'material-ui/svg-icons/social/person-add';
 
 /* components */
 import { LeftNav, LeftNavItem } from './components/LeftNav';
 import { LoginDialog } from './components/Login';
+import { NewUserDialog } from './components/NewUser';
 import { PostDialog, PostList, PostBoard } from './components/Post';
 
 const server = prefix('http://localhost:3000');
@@ -34,9 +36,11 @@ class App extends React.Component {
     this.onLeftIconButtonTouchTap = this.onLeftIconButtonTouchTap.bind(this);
     this.onLoginItemClick = this.onLoginItemClick.bind(this);
     this.onLogoutItemClick = this.onLogoutItemClick.bind(this);
+    this.onNewUserItemClick = this.onNewUserItemClick.bind(this);
     this.loadPosts = this.loadPosts.bind(this);
     this.showPost = this.showPost.bind(this);
     this.postLogin = this.postLogin.bind(this);
+    this.postNewUser = this.postNewUser.bind(this);
 
     this.state = {
       isLogin: false,
@@ -79,6 +83,10 @@ class App extends React.Component {
     this.setState({ isLogin: false, username: '' });
     this.loadPosts('/posts');
   }
+  onNewUserItemClick() {
+    this.refs.leftNav.handleToggle();
+    this.refs.newUserDialog.onRequestClose();
+  }
   loadPosts(url = '/posts') {
     url = '/api' + url;
     request.get(url)
@@ -99,6 +107,10 @@ class App extends React.Component {
   }
   postLogin(data) {
     this.setState({ isLogin: true, username: data.username });
+    this.refs.loginDialog.onRequestClose();
+  }
+  postNewUser(data) {
+    this.refs.newUserDialog.onRequestClose();
     this.refs.loginDialog.onRequestClose();
   }
   render() {
@@ -143,6 +155,11 @@ class App extends React.Component {
             {menuList}
             <Divider />
             <Subheader style={subheaderStyle}>帳號管理</Subheader>
+            <LeftNavItem
+              primaryText="New User"
+              onTouchTap={this.onNewUserItemClick}
+              leftIcon={(<PersonAdd />)}
+            />
             {LoginLogoutItem}
           </LeftNav>
           <div style={containerStyle}>
@@ -160,6 +177,7 @@ class App extends React.Component {
           </div>
           <PostDialog ref="postDialog" data={this.state.currentPost} />
           <LoginDialog ref="loginDialog" postLogin={this.postLogin} server={server} />
+          <NewUserDialog ref="newUserDialog" postNewUser={this.postNewUser} server={server} />
         </div>
       </MuiThemeProvider>
     );
