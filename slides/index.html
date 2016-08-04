@@ -117,6 +117,23 @@ ReactDOM.render(
 				</code></pre>
 			</section>
 			<section>
+				<h4>AngularJS - Write javascript inside HTML</h4>
+				<pre><code class="lang-javascript">
+&lt;div ng-app="myApp" ng-controller="myCtrl"&gt;
+  &lt;div&gt;
+    &lt;h1&gt;Hello, {{username}}&lt;/h1&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope) {
+  $scope.username = 'kevinptt';
+});
+&lt;/script&gt;
+				</code></pre>
+			</section>
+			<section>
 				<h4>write javascript <span class="upper">inside</span> "<span class="bold">{ }</span>"</h4>
 				<pre><code class="lang-javascript">
 let checked = true;
@@ -218,8 +235,37 @@ render() {
 		</section>
 
 		<section>
-			<h2>Life cycle</h2>
-			<img src="img/react-lifecycle.png" style="max-height: 60vh" />
+			<section>
+				<h2>Life cycle</h2>
+				<pre><code class="lang-javascript">
+class Switch extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      switch: false
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange() {
+    this.setState({switch: !this.state.switch});
+  }
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;input type="checkbox" onChange={this.handleChange} /&gt;
+        {this.state.switch ? "switch on" : "switch off"}
+      &lt;/div&gt;
+    );
+  }
+}
+				</code></pre>
+			</section>
+			<section>
+				<a href="https://codepen.io/kevinptt/pen/OXBJWJ" target="_blank">shouldComponentUpdate Example</a>
+			</section>
+			<section>
+				<a href="img/react-lifecycle.png" target="_blank"><img src="img/react-lifecycle.png" style="max-height: 60vh" /></a>
+			</section>
 		</section>
 
 		<section>
