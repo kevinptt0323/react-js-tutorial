@@ -1,0 +1,3 @@
+- `frontend/`: unfinished frontend template
+- `frontend-example`: finished frontend template
+- `backend/`: a backend helper
