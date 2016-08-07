@@ -10,4 +10,4 @@ Also thanks to these packages:
 `npm install`
 
 ## Start
-`npm run server`
+`npm run start`

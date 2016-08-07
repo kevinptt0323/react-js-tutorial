@@ -10,7 +10,7 @@ This server example is based on [koa](http://koajs.com/) and [MongoDB](https://w
 2. `npm install`
 
 ## Start
-`npm run server`
+`npm run start`
 
 ## API
 
