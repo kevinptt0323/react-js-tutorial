@@ -27,7 +27,8 @@ function* create(next) {
   if (form && form.username) {
     const username = form.username;
     const user = yield userCol.findOne({ username });
-    const pid = (yield counterCol.findOne({ key: 'posts' })).value + 1;
+    const posts = (yield counterCol.findOne({ key: 'posts' })) || { value: 0 };
+    const pid = posts.value + 1;
     let post_data = {
       pid, 
       uid: user._id,
