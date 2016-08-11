@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "4b2a31793349c5fcbf47"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "6a361632e025dc3f6c1b"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -22173,7 +22173,7 @@
 	/* components */
 
 
-	var server = (0, _superagentPrefix2.default)('http://n1.kevchentw.nctu.me:3000');
+	var server = (0, _superagentPrefix2.default)('https://react.junyi.nctu.me');
 	var muiTheme = (0, _getMuiTheme2.default)({
 	  palette: {
 	    primary1Color: _colors.lightGreen400

@@ -17,7 +17,7 @@ import PersonAdd from 'material-ui/svg-icons/social/person-add';
 
 /* components */
 
-const server = prefix('http://n1.kevchentw.nctu.me:3000');
+const server = prefix('https://react.junyi.nctu.me');
 const muiTheme = getMuiTheme({
   palette: {
     primary1Color: lightGreen400,
