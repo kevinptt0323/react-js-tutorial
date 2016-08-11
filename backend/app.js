@@ -4,8 +4,8 @@ const db = require('monk')('localhost/react-js-tutorial')
 const wrap = require('co-monk');
 const cors = require('koa-cors');
 
-const siteRoute = require('./siteRoute')
-const apiRoute  = require('./apiRoute')
+const siteRoute = require('./siteRoute');
+const apiRoute  = require('./apiRoute');
 
 const { HOST="0.0.0.0", PORT=3000 } = process.env;
 

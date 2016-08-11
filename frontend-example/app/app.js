@@ -23,7 +23,7 @@ import { LoginDialog } from './components/Login';
 import { NewUserDialog } from './components/NewUser';
 import { PostDialog, PostList, PostBoard } from './components/Post';
 
-const server = prefix('http://localhost:3000');
+const server = prefix('http://n1.kevchentw.nctu.me:3000');
 const muiTheme = getMuiTheme({
   palette: {
     primary1Color: lightGreen400,
